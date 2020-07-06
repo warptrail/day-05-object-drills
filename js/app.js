@@ -4,7 +4,6 @@ const greeting = 'Greetings traveler. Welcome to the Web.';
 function displayMessage(message) {
   console.log(message);
 }
-
 displayMessage(greeting);
 
 // let loaf = ({ flour: 300, water: 210});
@@ -75,21 +74,25 @@ for(const property in cipher) {
 
 let decode = word => {
   let firstLetter = word.slice(0, 1);
-  if (firstLetter === 'a' || firstLetter === 'b' || firstLetter === 'c' || firstLetter === 'd'){
+  //if (firstLetter === 'a' || firstLetter === 'b' || firstLetter === 'c' || firstLetter === 'd'){
+  if(cipher[firstLetter]){
     let code = cipher[firstLetter];
-    return word.slice(code-1, code) || ' ';
+    return word.slice(code-1, code);
   }
   return '-';
 };
 
-console.log(decode('ee'));
+console.log(decode('arizona'), 'arizona');
+console.log(decode('buffalo'), 'buffalo');
+console.log(decode('california'), 'california');
 
 let stringToArray = function (str) {
   return str.trim().split(' ');
 };
 
-const someWords = 'the cats and the dogs inside arabian cabals become aware of the rewind apple bloom';
+const someWords = 'the cats and the dogs inside arizona cactus become aware of the rewind apple bloom';
 
+const secretMessage = 'deeei vroom alok blom ceevexious dirremextious krotar belcore aaron cromtar dovop';
 const newWords = stringToArray(someWords);
 
 console.log(someWords);
@@ -105,6 +108,7 @@ let decodeWords = words => {
 };
 
 console.log(decodeWords(someWords));
+console.log(decodeWords(secretMessage));
 
 // Factory Functions are functions that return an object without using 'new'
 
@@ -144,9 +148,16 @@ let lotrCharacters = [
 ];
 
 console.log(lotrCharacters);
+console.log('----------');
+
+const object1 = {
+  a: 'somestring',
+  b: 42,
+  c: false
+};
 
 
-const heros = [
+const HEROES = [
   { id: 1, name: 'Captain America', squad: 'Avengers' },
   { id: 2, name: 'Iron Man', squad: 'Avengers' },
   { id: 3, name: 'Spiderman', squad: 'Avengers' },
@@ -156,10 +167,86 @@ const heros = [
   { id: 7, name: 'Hulk', squad: 'Avengers' },
 ];
 
-const findOne = (array, query) => {
-  array.find(item => {
-    return item === query;
+// write a function findOne() that takes the following two arguments
+// arr - array of Heroes objects to search through
+// query - object with one or more key/value pairs
+// the first matching result should be returned even if multiple match
+// if a match isn't found return null
+// query needs to be an object
+// expressions are evaluated and produces values
+// function calls are also expressions
+
+
+const findOne = (arr, query) => {
+  let x = arr.find(element => {
+    for(let key in query){
+      if(element[key]!== query[key]){
+        return false;
+      } 
+    } 
+    return true;
   });
+
+  return x || null;
+};
+console.log(findOne(HEROES,{ id: 2, name: 'Aquaman' })); // Object literal
+console.log('---------');
+
+function returnKeyValue (object) {
+  let propertyNames = Object.getOwnPropertyNames(object);
+  //console.log(propertyNames);
+
+  let keyValue = '';
+  for (let i = 0; i < propertyNames.length; i++) {
+    let key = `${propertyNames[i]}`;
+    let value = object[key];
+    keyValue += `${key}: ${value}\n`;
+  }
+  keyValue = keyValue.slice(0, -1);
+  return keyValue;
+  // return `${key}: ${value}`;
+  // return `${Object.getOwnPropertyNames(userInput)}: ${userInput.value}`;
+}
+
+console.log(returnKeyValue(newChr1));
+
+
+console.log(Object.keys(object1));
+// expected output: ["a", "b", "c"]
+
+
+const Database = {
+  store: {
+    heroes: [
+      { id: 1, name: 'Captain America', squad: 'Avengers' },
+      { id: 2, name: 'Iron Man', squad: 'Avengers' },
+      { id: 3, name: 'Spiderman', squad: 'Avengers' },
+      { id: 4, name: 'Superman', squad: 'Justice League' },
+      { id: 5, name: 'Wonder Woman', squad: 'Justice League' },
+      { id: 6, name: 'Aquaman', squad: 'Justice League' },
+      { id: 7, name: 'Hulk', squad: 'Avengers' },
+    ]
+  },
+
+  findOne: function (query) {
+    console.log(this.store);
+    let x = this.store.heroes.find(element => {
+      for(let key in query){
+        if(element[key]!== query[key]){
+          return false;
+        } 
+      } 
+      return true;
+    });
+    return x || null;
+  }
 };
 
-console.log(findOne(heros, 'id: 1'));
+console.log(Database.findOne({ id: 2}));
+
+// By default when pass function
+// when the function is called, that's where "this" is set
+// Bound Function
+// Arrow functions are always bound
+// Lexical scope = bound to where it is in the file
+// 
